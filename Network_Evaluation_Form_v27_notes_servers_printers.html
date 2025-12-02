@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Network Evaluation Form (Editable)</title>
+  <style>
+    :root {
+      --brand: #1f5b3e;
+      --brand-2: #25704c;
+      --ink: #222;
+      --muted: #5a5a5a;
+      --line: #e6e6e6;
+      --bg: #ffffff;
+      --accent: #f5f7f8;
+      --accent-2: #eef3f1;
+      --danger: #b42318;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+                   Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      margin: 0; padding: 0; color: var(--ink); background: var(--bg);
+    }
+    .page {
+      width: min(100%, 8.5in); min-height: 11in; margin: 0 auto; padding: 0.35in 0.4in;
+      background: white;
+    }
+    header {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 3px solid var(--brand);
+    }
+    .logo-box {
+      width: 100%; height: 100px; display: flex; align-items: center; justify-content: center;
+      border: 1px dashed var(--line); border-radius: 8px; background: var(--accent);
+    }
+    h1 { margin: 0; color: var(--brand); font-size: 26px; line-height: 1.15; }
+    .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .card {
+      border: 1px solid var(--line); border-radius: 12px; padding: 12px 12px; background: var(--bg);
+      margin-bottom: 12px;
+    }
+    .card h2 { font-size: 16px; margin: 0 0 8px 0; color: var(--brand); }
+    .card h3 { font-size: 14px; margin: 10px 0 6px 0; color: var(--ink); }
+    label { font-size: 12px; color: var(--ink); }
+    input[type="text"], input[type="number"], input[type="email"], textarea, select {
+      width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px;
+      font-size: 12px; background: white;
+    }
+    textarea { min-height: 70px; }
+    .row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; }
+    .col-3 { grid-column: span 3; }
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+    .muted { color: var(--muted); font-size: 11px; }
+
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 8px;
+      border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 6px 7px;
+      font-size: 11.5px;
+      vertical-align: top;
+    }
+    th {
+      background: var(--accent);
+      text-align: left;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    tr:last-child td { border-bottom: none; }
+    .row-num { width: 28px; text-align: center; color: var(--muted); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 10px;
+      background: var(--brand); color: white; text-decoration: none;
+      font-weight: 600; font-size: 12px; border: 1px solid var(--brand);
+      cursor: pointer; user-select: none;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    }
+    .btn:hover { background: var(--brand-2); border-color: var(--brand-2); }
+    .btn.secondary {
+      background: white; color: var(--brand); border-color: var(--brand);
+    }
+    .btn.secondary:hover { background: var(--accent-2); }
+    .btn.danger {
+      background: white; color: var(--danger); border-color: var(--danger);
+    }
+    .btn.danger:hover { background: #fff5f4; }
+
+    .table-actions{
+      display:flex; gap:8px; margin-top:8px; margin-bottom:6px;
+      align-items:center; flex-wrap: wrap;
+    }
+    .btn.small{
+      padding:6px 10px; font-size:12px; border-radius:8px;
+    }
+
+    
+    .notes-btn{
+      margin-top:4px;
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:6px;
+      white-space: nowrap;
+    }
+    .notes-row td{
+      background: #fafbfb;
+      border-top: none;
+    }
+    .notes-area{
+      width: 100%;
+      min-height: 70px;
+      font-size: 11.5px;
+      resize: vertical;
+    }
+
+    .checkbox-inline { font-size: 12px; margin-right: 10px; }
+
+    .footer-note {
+      font-size: 11px; color: var(--muted); margin-top: 8px;
+    }
+
+    .no-print { display: block; }
+
+    /* Screen-only wide mode */
+    body.wide-mode .page{
+      width: min(100%, 11in);
+      padding: 0.25in 0.3in;
+    }
+    body.wide-mode header{
+      grid-template-columns: 130px 1fr;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { margin: 0; padding: 0.25in 0.35in; width: auto; min-height: auto; }
+      .no-print { display: none !important; }
+      thead th { position: static !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo-box" contenteditable="true">
+        <!-- keep your embedded logo if desired -->
+        Sundance Networks Logo
+      </div>
+      <div>
+        <h1 contenteditable="true">Network Evaluation Form</h1>
+        <div class="subtitle" contenteditable="true">Created 2025‑08‑14 • Prepared by: Sundance Networks</div>
+      </div>
+    </header>
+
+    <section class="card" contenteditable="true">
+      <h2>1) Site &amp; Contact Information</h2>
+      <div class="row">
+        <div class="col-6">
+          <label>Site/Location</label>
+          <input type="text" placeholder="e.g. Clubhouse, Office, Maintenance Shop"/>
+        </div>
+        <div class="col-6">
+          <label>Physical Address</label>
+          <input type="text" placeholder="Street, City, State, ZIP"/>
+        </div>
+        <div class="col-4">
+          <label>Primary Contact</label>
+          <input type="text" placeholder="Name &amp; Title"/>
+        </div>
+        <div class="col-4">
+          <label>Phone</label>
+          <input type="text" placeholder="(###) ###-####"/>
+        </div>
+        <div class="col-4">
+          <label>Email</label>
+          <input type="email" placeholder="name@example.com"/>
+        </div>
+        <div class="col-12">
+          <label>On‑site Hours / Access Notes</label>
+          <input type="text" placeholder="Key codes, gate access, escort required, etc."/>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" contenteditable="true">
+      <h2>2) Environment Overview</h2>
+      <div class="row">
+        <div class="col-4">
+          <label>Total PCs (workstations)</label>
+          <input type="number" min="0" placeholder="0"/>
+        </div>
+        <div class="col-4">
+          <label>Servers (physical or virtual)</label>
+          <input type="number" min="0" placeholder="0"/>
+        </div>
+        <div class="col-4">
+          <label>Networked Printers/MFPs</label>
+          <input type="number" min="0" placeholder="0"/>
+        </div>
+        <div class="col-12">
+          <label>General Notes</label>
+          <textarea placeholder="Environment summary, line‑of‑business apps, pain points, recent outages, etc."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3) Workstations -->
+    <section class="card">
+      <h2 contenteditable="true">3) Workstations Inventory</h2>
+      <div class="muted" contenteditable="true">Capture PC names, users, CPU, RAM, storage, OS, IP, and notes.</div>
+
+      <div class="table-actions no-print">
+        <button type="button" class="btn small add-row no-print" data-tbody="ws-tbody" data-template="ws-row-template">Add Workstation</button>
+        <button type="button" class="btn small danger remove-row no-print" data-tbody="ws-tbody">Remove Last</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th contenteditable="true" style="width:28px">#</th>
+            <th contenteditable="true">PC Name / Asset Tag</th>
+            <th contenteditable="true">User / Role</th>
+            <th contenteditable="true">CPU / Gen</th>
+            <th contenteditable="true">RAM</th>
+            <th contenteditable="true">Storage (Type/Size)</th>
+            <th contenteditable="true">OS / Build</th>
+            <th contenteditable="true">IP (DHCP/Static)</th>
+            <th contenteditable="true">Serial / Warranty</th>
+            <th contenteditable="true">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="ws-tbody"></tbody>
+      </table>
+
+      <template id="ws-row-template">
+  <tr class="ws-main-row">
+    <td class="row-num"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td>
+      <button type="button" class="btn secondary small notes-btn no-print row-notes-toggle">Add notes</button>
+    </td>
+  </tr>
+  <tr class="notes-row" hidden>
+    <td colspan="10">
+      <textarea class="notes-area" placeholder="Workstation notes (only if needed)"></textarea>
+    </td>
+  </tr>
+</template>
+    </section>
+
+    <!-- 4) Servers -->
+    <section class="card">
+      <h2 contenteditable="true">4) Servers / NAS / Virtualization</h2>
+
+      <div class="table-actions no-print">
+        <button type="button" class="btn small add-row no-print" data-tbody="srv-tbody" data-template="srv-row-template">Add Server</button>
+        <button type="button" class="btn small danger remove-row no-print" data-tbody="srv-tbody">Remove Last</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th contenteditable="true" style="width:28px">#</th>
+            <th contenteditable="true">Hostname</th>
+            <th contenteditable="true">Role (AD/DNS/DHCP/File/Print/Apps)</th>
+            <th contenteditable="true">CPU/RAM/Storage</th>
+            <th contenteditable="true">OS / Version</th>
+            <th contenteditable="true">Hypervisor / VM(s)</th>
+            <th contenteditable="true">IP / Interfaces</th>
+            <th contenteditable="true">Backups (Agent/Job)</th>
+            <th contenteditable="true">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="srv-tbody"></tbody>
+      </table>
+
+      <template id="srv-row-template">
+  <tr class="srv-main-row">
+    <td class="row-num"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td>
+      <button type="button" class="btn secondary small notes-btn no-print row-notes-toggle">Add notes</button>
+    </td>
+  </tr>
+  <tr class="notes-row" hidden>
+    <td colspan="9">
+      <textarea class="notes-area" placeholder="Server notes (only if needed)"></textarea>
+    </td>
+  </tr>
+</template>
+    </section>
+
+    <!-- 5) Networking -->
+    <section class="card" contenteditable="true">
+      <h2>5) Networking</h2>
+      <div class="row">
+        <div class="col-6">
+          <label>ISP</label>
+          <input type="text" placeholder="Provider name & account #"/>
+        </div>
+        <div class="col-3">
+          <label>Circuit Type</label>
+          <input type="text" placeholder="Cable/Fiber/DSL/Other"/>
+        </div>
+        <div class="col-3">
+          <label>Bandwidth (Up/Down)</label>
+          <input type="text" placeholder="e.g. 500/50 Mbps"/>
+        </div>
+        <div class="col-6">
+          <label>Public IP Address(es)</label>
+          <input type="text" placeholder="x.x.x.x (static/dynamic)"/>
+        </div>
+        <div class="col-6">
+          <label>DNS Hosting</label>
+          <input type="text" placeholder="Registrar/Host (e.g. GoDaddy, Cloudflare)"/>
+        </div>
+      </div>
+
+      <h3 contenteditable="true">Router / Firewall</h3>
+      <div class="row">
+        <div class="col-4"><label>Make / Model</label><input type="text" placeholder="e.g. Fortinet 60F, Ubiquiti UDM Pro"/></div>
+        <div class="col-4"><label>Firmware</label><input type="text" placeholder="Version, last update"/></div>
+        <div class="col-4"><label>Mgmt Access</label><input type="text" placeholder="Admin URL/Method"/></div>
+        <div class="col-12">
+          <label>WAN / LAN / VLANs</label>
+          <input type="text" placeholder="IP schema, DHCP scopes, VLAN IDs, inter‑VLAN rules"/>
+        </div>
+      </div>
+
+      <h3 contenteditable="true">Switching</h3>
+      <div class="table-actions no-print">
+        <button type="button" class="btn small add-row no-print" data-tbody="sw-tbody" data-template="sw-row-template">Add Switch</button>
+        <button type="button" class="btn small danger remove-row no-print" data-tbody="sw-tbody">Remove Last</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th contenteditable="true" style="width:28px">#</th>
+            <th contenteditable="true">Make/Model</th>
+            <th contenteditable="true">Managed?</th>
+            <th contenteditable="true">Ports</th>
+            <th contenteditable="true">PoE?</th>
+            <th contenteditable="true">Location</th>
+            <th contenteditable="true">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="sw-tbody"></tbody>
+      </table>
+      <template id="sw-row-template">
+        <tr>
+          <td class="row-num"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+        </tr>
+      </template>
+
+      <h3 contenteditable="true">Wireless</h3>
+      <div class="table-actions no-print">
+        <button type="button" class="btn small add-row no-print" data-tbody="wl-tbody" data-template="wl-row-template">Add AP / SSID</button>
+        <button type="button" class="btn small danger remove-row no-print" data-tbody="wl-tbody">Remove Last</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th contenteditable="true" style="width:28px">#</th>
+            <th contenteditable="true">AP Make/Model</th>
+            <th contenteditable="true">Controller/Cloud</th>
+            <th contenteditable="true">SSID</th>
+            <th contenteditable="true">VLAN</th>
+            <th contenteditable="true">Security (WPA2/3, PSK/802.1X)</th>
+            <th contenteditable="true">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="wl-tbody"></tbody>
+      </table>
+      <template id="wl-row-template">
+        <tr>
+          <td class="row-num"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+          <td contenteditable="true"></td>
+        </tr>
+      </template>
+    </section>
+
+    <!-- 6) Identity / Directory -->
+    <section class="card" contenteditable="true">
+      <h2>6) Identity / Directory</h2>
+      <div class="row">
+        <div class="col-6">
+          <label>Environment</label>
+          <div>
+            <label class="checkbox-inline"><input type="checkbox"/> Domain (Active Directory)</label>
+            <label class="checkbox-inline"><input type="checkbox"/> Azure AD / Entra ID</label>
+            <label class="checkbox-inline"><input type="checkbox"/> Workgroup</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <label>Domain Details</label>
+          <input type="text" placeholder="Domain name, DCs, FSMO roles, Azure tenant ID"/>
+        </div>
+        <div class="col-12">
+          <label>Password &amp; MFA Policy</label>
+          <input type="text" placeholder="Length, rotation, lockout, MFA scope (admins/users)"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7) Email & Collaboration -->
+    <section class="card" contenteditable="true">
+      <h2>7) Email &amp; Collaboration</h2>
+      <div class="row">
+        <div class="col-4"><label>Platform</label><input type="text" placeholder="Microsoft 365 / Google Workspace / Other"/></div>
+        <div class="col-4"><label>Domain(s)</label><input type="text" placeholder="email domains in use"/></div>
+        <div class="col-4"><label>Mailbox Count</label><input type="number" min="0" placeholder="0"/></div>
+        <div class="col-12"><label>Email Security</label><input type="text" placeholder="SPF, DKIM, DMARC, filtering (e.g., Defender, Proofpoint, Mimecast)"/></div>
+      </div>
+    
+      <h3 contenteditable="true">Additional Email Domains / Addresses / Services</h3>
+      <div class="muted" contenteditable="true">Use this table for extra domains, shared mailboxes, aliases, or non‑primary email platforms.</div>
+
+      <div class="table-actions no-print">
+        <button type="button" class="btn small add-row no-print" data-tbody="em-tbody" data-template="em-row-template">Add Email Entry</button>
+        <button type="button" class="btn small danger remove-row no-print" data-tbody="em-tbody">Remove Last</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th contenteditable="true" style="width:28px">#</th>
+            <th contenteditable="true">Type</th>
+            <th contenteditable="true">Domain / Address</th>
+            <th contenteditable="true">Purpose / Notes</th>
+          </tr>
+        </thead>
+        <tbody id="em-tbody"></tbody>
+      </table>
+
+      <template id="em-row-template">
+        <tr>
+          <td class="row-num"></td>
+          <td contenteditable="true" placeholder="e.g. Shared Mailbox, Alias, Secondary Platform"></td>
+          <td contenteditable="true" placeholder="e.g. alerts@company.com or company.net"></td>
+          <td contenteditable="true"></td>
+        </tr>
+      </template>
+
+    </section>
+
+    <!-- 8) Security Stack -->
+    <section class="card" contenteditable="true">
+      <h2>8) Security Stack</h2>
+      <div class="row">
+        <div class="col-4">
+          <label>Antivirus (AV)</label>
+          <input type="text" placeholder="Vendor / Version"/>
+        </div>
+        <div class="col-4">
+          <label>EDR</label>
+          <input type="text" placeholder="Vendor (e.g. CrowdStrike, SentinelOne)"/>
+        </div>
+        <div class="col-4">
+          <label>SOC/MDR</label>
+          <input type="text" placeholder="Provider / Coverage hours"/>
+        </div>
+        <div class="col-6">
+          <label>RMM / Patch Mgmt</label>
+          <input type="text" placeholder="Agent, policy, cadence"/>
+        </div>
+        <div class="col-6">
+          <label>SIEM / Log Retention</label>
+          <input type="text" placeholder="Tooling & retention policy"/>
+        </div>
+        <div class="col-12">
+          <label>Security Notes</label>
+          <textarea placeholder="Vulnerability scans, external exposure, VPN, remote access, port forwards, geoblocking, web filtering, email phishing tests, security awareness training."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9) Backup & DR -->
+    <section class="card" contenteditable="true">
+      <h2>9) Backup &amp; DR</h2>
+      <div class="row">
+        <div class="col-4"><label>Backup System(s)</label><input type="text" placeholder="e.g. Veeam, Acronis, Datto"/></div>
+        <div class="col-4"><label>Scope</label><input type="text" placeholder="Servers, PCs, M365/Google, NAS"/></div>
+        <div class="col-4"><label>Schedule</label><input type="text" placeholder="Daily/Hourly; retention policy"/></div>
+        <div class="col-6"><label>Off‑site / Cloud</label><input type="text" placeholder="Yes/No; provider"/></div>
+        <div class="col-6"><label>Last Test Date</label><input type="text" placeholder="Restore test &amp; RTO/RPO notes"/></div>
+        <div class="col-12"><label>DR Notes</label><textarea placeholder="Critical apps, dependencies, contact tree, runbooks, power/UPS, generator."></textarea></div>
+      </div>
+    </section>
+
+    <!-- 10) Printers / Peripherals / Cameras -->
+    <section class="card">
+      <h2 contenteditable="true">10) Printers / Peripherals / Cameras</h2>
+
+      <div class="table-actions no-print">
+        <button type="button" class="btn small add-row no-print" data-tbody="pr-tbody" data-template="pr-row-template">Add Device</button>
+        <button type="button" class="btn small danger remove-row no-print" data-tbody="pr-tbody">Remove Last</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th contenteditable="true" style="width:28px">#</th>
+            <th contenteditable="true">Type</th>
+            <th contenteditable="true">Make/Model</th>
+            <th contenteditable="true">IP</th>
+            <th contenteditable="true">Location</th>
+            <th contenteditable="true">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="pr-tbody"></tbody>
+      </table>
+
+      <template id="pr-row-template">
+  <tr class="pr-main-row">
+    <td class="row-num"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td contenteditable="true"></td>
+    <td>
+      <button type="button" class="btn secondary small notes-btn no-print row-notes-toggle">Add notes</button>
+    </td>
+  </tr>
+  <tr class="notes-row" hidden>
+    <td colspan="6">
+      <textarea class="notes-area" placeholder="Printer / device notes (only if needed)"></textarea>
+    </td>
+  </tr>
+</template>
+    </section>
+
+    <!-- 11) Other Pertinent Information -->
+    <section class="card" contenteditable="true">
+      <h2>11) Other Pertinent Information</h2>
+      <ul style="margin:6px 0 8px 18px; font-size:12px; color:var(--muted)" contenteditable="true">
+        <li>Line‑of‑Business apps (vendors, versions, licensing)</li>
+        <li>Wi‑Fi guest isolation &amp; onboarding flow</li>
+        <li>Cabling health; any daisy‑chained consumer switches</li>
+        <li>CCTV/NVR details; retention policy</li>
+        <li>SSL/TLS certificates &amp; expirations</li>
+        <li>Website CMS &amp; host; who maintains</li>
+        <li>Hardware warranties &amp; lifecycles</li>
+        <li>Policies: acceptable use, BYOD, data handling, incident response</li>
+      </ul>
+      <textarea class="col-12" placeholder="Add any details useful for the final report."></textarea>
+    </section>
+
+    <!-- 12) Sign-off -->
+    <section class="card" contenteditable="true">
+      <h2>12) Sign‑off</h2>
+      <div class="row">
+        <div class="col-6"><label>Completed By</label><input type="text" placeholder="Name, Title"/></div>
+        <div class="col-3"><label>Date</label><input type="text" placeholder="YYYY‑MM‑DD"/></div>
+        <div class="col-3"><label>Time</label><input type="text" placeholder="HH:MM"/></div>
+        <div class="col-12"><label>Signature</label><input type="text" placeholder=""/></div>
+      </div>
+    </section>
+
+    <div class="no-print" style="margin-top:18px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <a id="saveAsPdfBtn" class="btn" href="javascript:window.print()" title="Open print dialog to save as PDF">Save as PDF</a>
+      <a id="saveAsHtmlBtn" class="btn secondary" href="javascript:void(0)" title="Download a filled copy as HTML">Save as HTML</a>
+      <button id="wideModeBtn" type="button" class="btn secondary" title="Toggle wider on-screen layout">Wide mode</button>
+    </div>
+
+    <div class="footer-note">
+      Tip: Use Save as PDF to share, Save as HTML to keep editing later.
+    </div>
+  </div>
+
+  <script>
+  // ---------- Dynamic table helpers (robust, no inline handlers needed) ----------
+  function renumberRows(tbodyId){
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    let n = 1;
+    [...tbody.querySelectorAll('tr')].forEach(tr => {
+      if (tr.classList.contains('notes-row')) return;
+      const numCell = tr.querySelector('.row-num');
+      if (numCell) numCell.textContent = String(n++);
+    });
+  }
+
+  function addRow(tbodyId, templateId){
+    const tbody = document.getElementById(tbodyId);
+    const tpl = document.getElementById(templateId);
+    if (!tbody || !tpl) return;
+    const frag = tpl.content.cloneNode(true);
+    tbody.appendChild(frag);
+    renumberRows(tbodyId);
+  }
+
+  function removeRow(tbodyId){
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody || tbody.children.length === 0) return;
+
+    const last = tbody.lastElementChild;
+    if (last && last.classList.contains('notes-row')) {
+      tbody.removeChild(last);
+    }
+    const lastMain = tbody.lastElementChild;
+    if (lastMain) tbody.removeChild(lastMain);
+
+    renumberRows(tbodyId);
+  }
+
+  function toggleRowNotes(btn){
+  const mainRow = btn.closest('tr');
+  if (!mainRow) return;
+  const notesRow = mainRow.nextElementSibling;
+  if (!notesRow || !notesRow.classList.contains('notes-row')) return;
+  const willShow = notesRow.hidden;
+  notesRow.hidden = !willShow;
+  btn.textContent = willShow ? 'Hide notes' : 'Add notes';
+}
+  // ---------- Save as HTML (preserves dynamic rows & entered values) ----------
+  function saveAsHTML() {
+    const clone = document.documentElement.cloneNode(true);
+
+    const srcFields = document.querySelectorAll('input, textarea, select');
+    const dstFields = clone.querySelectorAll('input, textarea, select');
+    srcFields.forEach((srcEl, i) => {
+      const dstEl = dstFields[i];
+      if (!dstEl) return;
+      const tag = (srcEl.tagName || '').toLowerCase();
+
+      if (tag === 'textarea') {
+        dstEl.textContent = srcEl.value || '';
+      } else if (tag === 'select') {
+        const srcOpts = srcEl.options;
+        const dstOpts = dstEl.options;
+        for (let j=0; j<srcOpts.length; j++) {
+          if (dstOpts[j]) dstOpts[j].selected = srcOpts[j].selected;
+        }
+        if (srcEl.multiple) dstEl.setAttribute('multiple', '');
+      } else if (tag === 'input') {
+        const type = (srcEl.getAttribute('type') || 'text').toLowerCase();
+        if (type === 'checkbox' || type === 'radio') {
+          if (srcEl.checked) dstEl.setAttribute('checked', '');
+          else dstEl.removeAttribute('checked');
+        } else {
+          dstEl.setAttribute('value', srcEl.value || '');
+        }
+      }
+    });
+
+    const doctype = '<!DOCTYPE html>\n';
+    const htmlString = doctype + clone.outerHTML;
+    const blob = new Blob([htmlString], {type: 'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Network_Evaluation_Form_filled.html';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 0);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('th, td').forEach(el => {
+      if (el.querySelector('button, textarea, input, select')) return;
+      el.setAttribute('contenteditable','true');
+    });
+
+    const htmlBtn = document.getElementById('saveAsHtmlBtn');
+    if (htmlBtn) htmlBtn.addEventListener('click', saveAsHTML);
+
+    const wideBtn = document.getElementById('wideModeBtn');
+    if (wideBtn) {
+      wideBtn.addEventListener('click', () => {
+        document.body.classList.toggle('wide-mode');
+        wideBtn.textContent = document.body.classList.contains('wide-mode') ? 'Normal mode' : 'Wide mode';
+      });
+    }
+
+    // Event delegation for all dynamic controls
+    document.body.addEventListener('click', (e) => {
+      const add = e.target.closest('.add-row');
+      if (add) {
+        addRow(add.dataset.tbody, add.dataset.template);
+        return;
+      }
+      const rem = e.target.closest('.remove-row');
+      if (rem) {
+        removeRow(rem.dataset.tbody);
+        return;
+      }
+      const notesBtn = e.target.closest('.row-notes-toggle');
+      if (notesBtn) {
+        toggleRowNotes(notesBtn);
+        return;
+      }
+    });
+
+    addRow('ws-tbody','ws-row-template');
+    addRow('srv-tbody','srv-row-template');
+    addRow('pr-tbody','pr-row-template');
+    addRow('sw-tbody','sw-row-template');
+    addRow('wl-tbody','wl-row-template');
+    addRow('em-tbody','em-row-template');
+  });
+</script>
+</body>
+</html>
